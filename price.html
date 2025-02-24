@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости о МедНике</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-link.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .burger-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: #333;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+
+            .nav-list {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                display: block;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-link:hover {
+                background-color: #f0f0f0;
+            }
+
+            .nav-link::after {
+                display: none;
+            }
+        }
+
+        /* Анимация для бургер-меню */
+        .burger.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Демонстрационный контент */
+        .content {
+            margin-top: 80px;
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">Новости</a>
+            <button class="burger" onclick="toggleMenu()">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="price.html" class="nav-link active">Новости</a>
+                </li>
+                <li class="nav-item">
+                    <a href="people.html" class="nav-link">Видео</a>
+                </li>
+                <li class="nav-item">
+                    <a href="company.html" class="nav-link">Вопросы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">Обо мне</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+    
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/pqXc85Y8TGs?si=Gng1qfYADIdaLkx-&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            
+        </iframe>
+
+       <h1>У MedNik Новый видос!</h1>
+    </main>
+    
+    <script>
+        function toggleMenu() {
+            const navList = document.querySelector('.nav-list');
+            const burger = document.querySelector('.burger');
+            navList.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+
+        // Закрытие меню при клике на пункт меню (для мобильной версии)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navList = document.querySelector('.nav-list');
+                const burger = document.querySelector('.burger');
+                navList.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
