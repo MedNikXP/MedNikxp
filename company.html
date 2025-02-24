@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вопросы к МедНику</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-link.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 100px auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .question-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .submit-button:disabled {
+            background-color: #93c5fd;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .alert.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .burger-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: #333;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+
+            .nav-list {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                display: block;
+                padding: 1rem;
+                text-align: center;
+                border-radius: 0;
+            }
+        }
+
+        /* Анимация для бургер-меню */
+        .burger.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Демонстрационный контент */
+        .content {
+            margin-top: 80px;
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">Вопросы</a>
+            <button class="burger" onclick="toggleMenu()">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="price.html" class="nav-link">Новости</a>
+                </li>
+                <li class="nav-item">
+                    <a href="people.html" class="nav-link">Видео</a>
+                </li>
+                <li class="nav-item">
+                    <a href="company.html" class="nav-link active">Вопросы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="question.html" class="nav-link">Обо мне</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <div class="alert success" id="successAlert">
+            Ваш вопрос успешно отправлен! Мы ответим вам в ближайшее время.
+        </div>
+        <div class="alert error" id="errorAlert">
+            Произошла ошибка при отправке вопроса. Пожалуйста, попробуйте позже.
+        </div>
+        
+        <form class="question-form" id="questionForm">
+            <div class="form-group">
+                <label for="name" class="form-label">Твоё Имя</label>
+                <input type="text" id="name" name="name" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="question" class="form-label">Твой вопрос</label>
+                <textarea id="question" name="question" class="form-textarea" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-button" id="submitButton">
+                Отправить вопрос
+                <span class="loading-spinner" id="loadingSpinner"></span>
+            </button>
+        </form>
+    </main>
+
+    <script>
+        // Функция для отправки вопроса в Telegram
+        async function sendToTelegram(data) {
+            const BOT_TOKEN = '8112603781:AAHO6bUTm-lzIdjq0f48n5l792-SRSSYHKY'; // Замените на ваш токен бота
+            const CHAT_ID = '6347487988'; // Замените на ваш ID чата
+            
+            const message = `
+                Новый вопрос!
+                
+                Имя: ${data.name}
+                Вопрос: ${data.question}
+            `;
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send message to Telegram');
+            }
+
+            return response.json();
+        }
+
+        // Обработчик отправки формы
+        document.getElementById('questionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = document.getElementById('submitButton');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const successAlert = document.getElementById('successAlert');
+            const errorAlert = document.getElementById('errorAlert');
+            
+            // Собираем данные формы
+            const formData = {
+                name: document.getElementById('name').value,
+                question: document.getElementById('question').value
+            };
+            
+            // Показываем загрузку
+            submitButton.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            try {
+                await sendToTelegram(formData);
+                
+                // Показываем успешное сообщение
+                successAlert.style.display = 'block';
+                document.getElementById('questionForm').reset();
+            } catch (error) {
+                // Показываем сообщение об ошибке
+                errorAlert.style.display = 'block';
+                console.error('Error:', error);
+            } finally {
+                // Скрываем загрузку
+                submitButton.disabled = false;
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // Мобильное меню
+        function toggleMenu() {
+            const navList = document.querySelector('.nav-list');
+            const burger = document.querySelector('.burger');
+            navList.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+    </script>
+
+    <script>
+        function toggleMenu() {
+            const navList = document.querySelector('.nav-list');
+            const burger = document.querySelector('.burger');
+            navList.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+
+        // Закрытие меню при клике на пункт меню (для мобильной версии)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navList = document.querySelector('.nav-list');
+                const burger = document.querySelector('.burger');
+                navList.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
