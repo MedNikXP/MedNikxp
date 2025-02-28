@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedNik - Главная</title>
+    <style>
+        :root {
+            --primary: #000000;
+            --text: #333;
+            --bg: #f5f5f5;
+            --white: #ffffff;
+            --hover: #f0f0f0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Main Content */
+        .content {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Social Media Section */
+        .social-media {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .social-media h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            color: var(--primary);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Video Section */
+        .video-section {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .video-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 1rem;
+            display: block;
+        }
+
+        /* Burger Menu */
+        .burger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .burger-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+
+            .nav-list {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                gap: 0;
+                box-shadow: var(--shadow);
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                display: block;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-link:hover::after {
+                width: 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .video-container {
+                border-radius: 0.5rem;
+            }
+        }
+
+        /* Burger Animation */
+        .burger.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">Главная</a>
+            <button class="burger" onclick="toggleMenu()">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+        </button>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link active">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a href="price.html" class="nav-link">Новости</a>
+            </li>
+            <li class="nav-item">
+                <a href="people.html" class="nav-link">Видео</a>
+            </li>
+            <li class="nav-item">
+                <a href="company.html" class="nav-link">Вопросы</a>
+            </li>
+            <li class="nav-item">
+                <a href="question.html" class="nav-link">Обо мне</a>
+            </li>
+        </ul>
+    </nav>
+    </header>
+
+    <main class="content">
+        <section class="hero">
+            <h1>Добро пожаловать на мой сайт MedNik</h1>
+            <p>Здесь ты найдёшь видео которые выходят раньше чем на Ютуб!</p>
+        </section>
+
+        <section class="social-media">
+            <h2>Мои соц.сети</h2>
+            <div class="social-links">
+                <a href="https://www.youtube.com/@MedHik_XP" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    YouTube
+                </a>
+                <a href="https://www.twitch.tv/medhik_xp" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/>
+                    </svg>
+                    Twitch
+                </a>
+                <a href="https://t.me/%20LS9lu7PubsA0NmFi" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9.417 15.181l-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/>
+                    </svg>
+                    Telegram
+                </a>
+                <a href="https://discord.gg/kbaZcknafV" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.175 13.175 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
+                    </svg>
+                    Discord
+                </a>
+                <a href="https://vk.com/club227549866" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.204.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
+                    </svg>
+                    VK
+                </a>
+                <a href="https://boosty.to/dark_yt" class="social-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 3c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9zm0 2.25c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75 6.75-3.022 6.75-6.75S15.728 5.25 12 5.25zm0 2.25c2.485 0 4.5 2.015 4.5 4.5s-2.015 4.5-4.5 4.5-4.5-2.015-4.5-4.5 2.015-4.5 4.5-4.5z"/>
+                    </svg>
+                    Boosty
+                </a>
+            </div>
+        </section>
+
+        <section class="video-section">
+            <h2>Новое Видео!</h2>
+            <div class="video-container">
+                <video controls src="video/abobe.mp4"></video>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            const navList = document.querySelector('.nav-list');
+            const burger = document.querySelector('.burger');
+            navList.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+
+        // Close menu when clicking a menu item (mobile version)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navList = document.querySelector('.nav-list');
+                const burger = document.querySelector('.burger');
+                navList.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
